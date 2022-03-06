@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/track.png",
     "splash": {
-      "image": "./assets/athletics.png",
+      "image": "./assets/sport-shoes2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

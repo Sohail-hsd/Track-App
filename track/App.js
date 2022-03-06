@@ -14,6 +14,7 @@ import React, { useEffect, useContext } from 'react'
 import { Provider as AuthProvider } from './src/context/authContext';
 import { navigationRef } from './src/RootNavigation';
 import { Context as authContext } from './src/context/authContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
 import TryLocalAuth from './src/screens/TryLocalAuth';
 
 const Stack = createNativeStackNavigator()
@@ -61,7 +62,7 @@ export function App() {
                   name='Account'
                   component={AccountScreen}
                   options={{
-                    headerShown:false,
+                    headerShown: false,
                     tabBarIcon: ({ color }) => (
                       <MaterialCommunityIcons name='account' color={color} size={26} />
                     )
@@ -79,7 +80,9 @@ export function App() {
 export default () => {
   return (
     <AuthProvider>
-      <App />
+      <LocationProvider>
+        <App />
+      </LocationProvider> 
     </AuthProvider>
   )
 }

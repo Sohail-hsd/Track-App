@@ -32,7 +32,10 @@ const Map = () => {
           strokeColor='rgba(158,158,255,1.0)' //Border Color
           fillColor='rgba(158,158,255,0.3)' // circle fill Color
         />
-        <Polyline coordinates={locations.map(loc => loc.coords)} />
+        <Polyline coordinates={locations.map(loc => loc.coords)}
+          strokeColor="rgba(18, 16, 134, 0.3)"
+          strokeWidth={4}
+        />
       </MapView>
 
 

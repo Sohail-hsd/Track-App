@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { Input, Button } from 'react-native-elements'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Input, Button, Text } from 'react-native-elements'
 import { Context as LocationContext } from '../context/LocationContext'
 import useSaveTrack from '../Hooks/useSaveTrack'
 import * as RootNavigation from '../RootNavigation';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons'
 
 
 const TrackForm = () => {
@@ -20,8 +21,7 @@ const TrackForm = () => {
     const [Err, setErr] = useState(null);
 
     const submittForm = () => {
-        if(!TrackName)
-        {
+        if (!TrackName) {
             setErr('Enter Track Name First.')
             return
         }
@@ -34,22 +34,35 @@ const TrackForm = () => {
     }
     return (
         <>
-            <Input
+            {/* <Input
                 style={styles.input}
                 errorMessage={Err}
                 value={TrackName}
                 placeholder="Enter Track Name"
                 onChangeText={text => setTrackName(text)}
-            />
+            /> */}
             {recording ? (
-                <Button buttonStyle={styles.btn2} title='Stop Recording' onPress={stopRecording} />
+                <View style={styles.iconView}>
+                    <TouchableOpacity style={styles.btn} onPress={stopRecording}>
+                        <Ionicons name='md-stop' size={30} />
+                    </TouchableOpacity>
+                </View>
             ) : (
-                <Button buttonStyle={styles.btn} title='Start Recording' onPress={startRecording} />
+                <View style={styles.iconView}>
+                    <TouchableOpacity style={styles.btn} onPress={startRecording}>
+                        <MaterialCommunityIcons name='go-kart-track' size={30} />
+                    </TouchableOpacity>
+                </View>
+
             )}
             {
                 !recording && locations.length ?
-                <Button  buttonStyle={styles.btn2} title='Save Track' onPress={submittForm} />
-                : null
+                    <View style={styles.iconView}>
+                        <TouchableOpacity style={styles.btn} onPress={startRecording}>
+                            <MaterialCommunityIcons name='progress-upload' size={30} />
+                        </TouchableOpacity>
+                    </View>
+                    : null
             }
         </>
     )
@@ -57,22 +70,30 @@ const TrackForm = () => {
 
 const styles = StyleSheet.create({
     input: {
-        marginTop:10,
+        marginTop: 10,
     },
     btn: {
-        marginHorizontal: 10,
-        borderRadius: 10,
-        backgroundColor: 'rgba(39, 39, 39, 1)',
-        height: 80,
-        marginBottom:5,
-
+        borderRadius: 100,
+        // backgroundColor: 'rgba(39, 39, 39, 1)',
+        backgroundColor: 'white',
+        height: 60,
+        padding: 13,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginEnd: 10
     },
-    btn2:{
+    btn2: {
         marginHorizontal: 10,
-        marginBottom:10,
+        marginBottom: 10,
         borderRadius: 10,
         backgroundColor: 'rgba(39, 39, 39, 1)',
         height: 40,
+    },
+    iconView: {
+        position: 'absolute',
+        flexDirection: 'row',
+        marginTop: 580,
+        alignSelf: "flex-end"
     }
 })
 

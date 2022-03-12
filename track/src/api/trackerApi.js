@@ -2,7 +2,7 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const instance = axios.create({
-    baseURL:'https://2fcc-39-33-65-138.ngrok.io'
+    baseURL:'https://143f-39-33-21-202.ngrok.io'
 })
 
 // This will take two function. (config) this object have access to all of our request compenets(headers,auth-token etc)

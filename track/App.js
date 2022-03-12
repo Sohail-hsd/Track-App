@@ -21,6 +21,45 @@ import TryLocalAuth from './src/screens/TryLocalAuth';
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator();
 
+function Profile() {
+  return (
+    <Tab.Navigator screenOptions={{ "tabBarHideOnKeyboard": "true" }} >
+      <Tab.Screen
+        name='List'
+        component={TrackListScreen}
+        options={{
+          title: 'Track List',
+          headerStyle: { backgroundColor: 'rgba(59, 57, 173, 0.28)' },
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name='list-alt' color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Create'
+        component={TrackCreateScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="add" color={color} size={26} />
+          ),
+        }}
+
+      />
+      <Tab.Screen
+        name='Account'
+        component={AccountScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='account' color={color} size={26} />
+          )
+        }}
+
+      />
+
+    </Tab.Navigator>
+  );
+}
 export function App() {
   const { state, tryLocalSignin } = useContext(authContext)
 
@@ -31,54 +70,34 @@ export function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer ref={navigationRef} >
-        {
-          !state.token ? (
-            <Stack.Navigator initialRouteName={state.initialRouteName} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={state.initialRouteName} screenOptions={{ headerShown: false }}>
+          {
+            !state.token ? (
               <>
                 <Stack.Screen name='Signin' component={SigninScreen} />
-                {/* <Stack.Screen name='tryLocalAuth' component={TryLocalAuth} /> */}
                 <Stack.Screen name='Signup' component={SignupScreen} />
                 <Stack.Screen name='Forget Password' component={ForgetPassword} />
               </>
-            </Stack.Navigator>
-          ) : (
-            <>
-              <Tab.Navigator screenOptions={{ "tabBarHideOnKeyboard": "true" }} >
-                <Tab.Screen
-                  name='List'
-                  component={TrackListScreen}
-                  options={{
-                    tabBarIcon: ({ color }) => (
-                      <FontAwesome5 name='list-alt' color={color} size={26} />
-                    ),
-                  }}
+            ) : (
+              <>
+                {/* <Tab.Navigator screenOptions={{ "tabBarHideOnKeyboard": "true" }} >
+                </Tab.Navigator> */}
+                <Stack.Screen
+                  name="Profile"
+                  component={Profile}
+                  options={{ headerShown: false }}
                 />
-                <Tab.Screen
-                  name='Create'
-                  component={TrackCreateScreen}
-                  options={{
-                    tabBarIcon: ({ color }) => (
-                      <MaterialIcons name="add" color={color} size={26} />
-                    ),
-                  }}
-
+                <Stack.Screen
+                  name="Details"
+                  component={TrackDetailScreen}
+                  options={({ route }) => ({ title: route.params.name, headerShown: true })}
                 />
-                <Tab.Screen
-                  name='Account'
-                  component={AccountScreen}
-                  options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                      <MaterialCommunityIcons name='account' color={color} size={26} />
-                    )
-                  }}
 
-                />
-              </Tab.Navigator>
-             
 
-            </>
-          )}
+
+              </>
+            )}
+        </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );

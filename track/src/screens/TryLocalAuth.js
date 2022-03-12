@@ -1,12 +1,15 @@
 import React,{useContext,useEffect} from 'react'
+import {ActivityIndicator} from 'react-native'
 import { Context as authContext } from '../context/authContext'
 
 const TryLocalAuth = () => {
-    const {tryLocalSignin, loading}  = useContext(authContext)
+    const {tryLocalSignin}  = useContext(authContext)
     useEffect(() => {
-        tryLocalSignin()
+      tryLocalSignin()
     }, []);
-  return null
+  
+  return <ActivityIndicator style={{marginTop:400}} size="large" color="#0000ff" />
+
 }
 
 export default TryLocalAuth

@@ -9,20 +9,31 @@ const router = express.Router()
 router.use(requireAuth)
 
 router.post('/tracks', async (req, res) => {
-    const tracks = await Track.find({ userId: req.user._id })
-    const {name , locations} = req.body
-    if(!name || !locations){
-        return res.status(422).send({error:"Must Provide name and locations"})
+    await Track.find({ userId: req.user._id })
+    const { name, locations } = req.body
+    if (!name || !locations) {
+        return res.status(422).send({ error: "Must Provide name and locations" })
     }
     try {
-        const track = new Track({name, locations, userId:req.user._id})
+        const track = new Track({ name, locations, userId: req.user._id })
         await track.save()
-        res.send({track})
-        
+        res.send({ track })
+
     } catch (error) {
-        return res.status(422).send({error:error.message})
+        return res.status(422).send('Unhandel', { error: error.message })
     }
 
+})
+
+router.get('/getTracks', async (req, res) => {
+    try {
+        console.log(req.user._id)
+        const track = await Track.find({ userId: req.user._id })
+        res.send(track)
+    } catch (error) {
+        console.log(error.message)
+        res.send("Internal Server Error.!");
+    }
 })
 
 module.exports = router

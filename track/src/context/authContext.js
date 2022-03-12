@@ -1,7 +1,7 @@
 import createDataContext from "./createDataContext";
 import trackerApi from "../api/trackerApi";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as RootNavigation from "../RootNavigation";
+// import * as RootNavigation from "../RootNavigation";
 
 
 /// Reducer
@@ -16,7 +16,7 @@ const authReducer = (state, action) => {
         case 'signup':
             return { ErrorMessage: '', token: action.payload }
         case 'changeRoute':
-            return {initialRoute:action.payload}
+            return { initialRouteName: action.payload }
         case "Error":
             return { ...state, ErrorMessage: action.payload }
         default:
@@ -27,15 +27,16 @@ const authReducer = (state, action) => {
 /// Action Functions
 
 const initialRoute = (dispatch) => (route) => {
-    dispatch({type:'changeRoute',payload:route})
+    dispatch({ type: 'changeRoute', payload: route })
 }
 
 const tryLocalSignin = (disaptch) => async () => {
     try {
         const token = await AsyncStorage.getItem('token')
         disaptch({ type: 'signin', payload: token })
-        if(!token){
+        if (!token) {
             initialRoute('Signin')
+            return
         }
         initialRoute('tryLocalAuth')
     } catch (error) {
@@ -64,6 +65,7 @@ const signin = (disaptch) => async ({ email, password }) => {
         const response = await trackerApi.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
         disaptch({ type: 'signin', payload: response.data.token })
+        console.log(response.data.token)
     } catch (error) {
         disaptch({ type: 'Error', payload: "Invalid Email or Password.(Error While Signin)" })
         setTimeout(() => disaptch({ type: 'Error', payload: '' }), 9000)

@@ -1,27 +1,35 @@
 import './_mockLocation'
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Button, Text } from 'react-native-elements'
+import { Text } from 'react-native-elements'
+import { useIsFocused } from '@react-navigation/native';
 import Map from '../components/Map'
 import { Context as locationContext } from '../context/LocationContext'
 import useLocation from '../Hooks/useLocation'
+import TrackForm from '../components/TrackForm';
 
 const TrackCreateScreen = () => {
-    const {addLocation} = useContext(locationContext)
-    const [error] = useLocation(addLocation)
-    
+    const { state : {recording}, addLocation } = useContext(locationContext);
+    const isFocused = useIsFocused()
+    const callback = useCallback(
+        location => {
+            addLocation(location, recording);
+        },
+        [recording]
+    );
+    const [err] = useLocation(isFocused || recording, callback);
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>TrackCreateScreen</Text>
-            <View style={styles.track}>
-                <Map />
+        <>
+            <View style={styles.container}>
+                <Text style={styles.title}>TrackCreateScreen</Text>
+                <View style={styles.track}>
+                    <Map />
+                </View>
+                {err ? <Text>Please enable location services.{err}</Text> : null}
+                <TrackForm />
             </View>
-            {error ? <Text>Please enable location services.{error}</Text> : null}
-            <Button
-                buttonStyle={styles.btn}
-                title='Record Track'
-            />
-        </View>
+        </>
     )
 }
 
@@ -29,14 +37,6 @@ const styles = StyleSheet.create({
     container: {
         margin: 5,
         flex: 1,
-    },
-    btn: {
-        marginHorizontal: 10,
-        marginVertical: 10,
-        borderRadius: 10,
-        backgroundColor: 'rgba(39, 39, 39, 1)',
-        height: 80,
-
     },
     title: {
         fontSize: 20,

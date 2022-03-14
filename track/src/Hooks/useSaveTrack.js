@@ -9,10 +9,14 @@ export default () => {
     const { createTrack } = useContext(TrackContext)
     const { state: { locations, name }, reset } = useContext(LocationContext)
 
-    const saveTrack = () => {
-        createTrack(name, locations)
-        reset()
-        RootNavigation.navigate('List')
+    const saveTrack = async () => {
+        try {
+            await createTrack(name, locations)
+            reset()
+            RootNavigation.navigate('List')
+        } catch (error) {
+            console.log(error)
+        }
         
     }
     return [saveTrack]

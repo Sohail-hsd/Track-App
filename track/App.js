@@ -39,6 +39,7 @@ function Profile() {
         name='Create'
         component={TrackCreateScreen}
         options={{
+          headerShown:false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="add" color={color} size={26} />
           ),

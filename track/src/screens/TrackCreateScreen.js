@@ -1,6 +1,6 @@
 import './_mockLocation'
-import React, { useContext, useCallback } from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useContext, useCallback, useEffect } from 'react'
+import { View, StyleSheet, StatusBar } from 'react-native'
 import { Text } from 'react-native-elements'
 import { useIsFocused } from '@react-navigation/native';
 import Map from '../components/Map'
@@ -9,7 +9,7 @@ import useLocation from '../Hooks/useLocation'
 import TrackForm from '../components/TrackForm';
 
 const TrackCreateScreen = () => {
-    const { state : {recording}, addLocation } = useContext(locationContext);
+    const { state: { recording }, addLocation, reset } = useContext(locationContext);
     const isFocused = useIsFocused()
     const callback = useCallback(
         location => {
@@ -17,12 +17,21 @@ const TrackCreateScreen = () => {
         },
         [recording]
     );
+    // useEffect(() => {
+    //     reset()
+    // }, [input]);
     const [err] = useLocation(isFocused || recording, callback);
-
+           
     return (
         <>
+            <StatusBar
+                animated={true}
+                backgroundColor="rgba(59, 57, 173, 0.28)"
+                barStyle='dark-content'
+                hidden={false}
+                />
+
             <View style={styles.container}>
-                <Text style={styles.title}>TrackCreateScreen</Text>
                 <View style={styles.track}>
                     <Map />
                 </View>
@@ -35,7 +44,7 @@ const TrackCreateScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 5,
+        margin: 1,
         flex: 1,
     },
     title: {

@@ -4,7 +4,7 @@ import MapView, { Polyline, Circle } from 'react-native-maps'
 import { Context as locationContext } from '../context/LocationContext'
 
 const Map = () => {
-  const { state: { currentLocation, locations } } = useContext(locationContext);
+  const { state: { currentLocation, locations} } = useContext(locationContext);
   if (!currentLocation) {
     return (
       <View style={[styles.container, styles.horizontal]}>

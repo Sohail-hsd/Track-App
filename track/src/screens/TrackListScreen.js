@@ -18,7 +18,7 @@ const TrackListScreen = ({ navigation }) => {
         }
     }, [])
 
-
+    
     return (
         <View>
             {state.length === 0 ? <ActivityIndicator style={{ marginTop: 280 }} size="large" color="#0000ff" /> :
